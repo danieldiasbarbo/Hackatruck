@@ -7,23 +7,24 @@
 
 import SwiftUI
 
-struct cc: View {
-    var body: some View{
-        VStack{
-            Text("Meu pau no rabo")
-        }
-    }
-}
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        TabView{
+            HomeView()
+                .tabItem{
+                    Label("Menu",
+                          systemImage: "list.dash")
+                }
+            PhotoView()
+                .tabItem{
+                    Label("Foto", systemImage: "archivebox")
+                }
+            ImageScrollView()
+                .tabItem{
+                    Label("Scroll", systemImage: "tray.and.arrow.up")
+                }
         }
-        .padding()
     }
 }
 
