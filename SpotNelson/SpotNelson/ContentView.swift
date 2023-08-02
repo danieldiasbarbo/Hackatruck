@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    var musicas = [
+    var dados = [
         Song(id: 1, name: "Pelados em Santos", artist: "Mamonas Assasinas", cover: "https://mosaic.scdn.co/640/ab67616d00001e0220d57bc5fd5bbe506cabc22cab67616d00001e023982e253126c959ab9677bcbab67616d00001e029b6bfd2b42a363f11dcf1b7cab67616d00001e02adeae8c2b1b4087463e071e3"),
         Song(id: 2, name: "Staway to Heaven", artist: "Led Zeppeling", cover: "https://cdns-images.dzcdn.net/images/cover/9e663c64680899afd85f72af607d549e/264x264.jpg"),
         Song(id: 3, name: "Pelados em Santos", artist: "Mamonas Assasinas", cover: "https://mosaic.scdn.co/640/ab67616d00001e0220d57bc5fd5bbe506cabc22cab67616d00001e023982e253126c959ab9677bcbab67616d00001e029b6bfd2b42a363f11dcf1b7cab67616d00001e02adeae8c2b1b4087463e071e3"),
@@ -20,6 +20,17 @@ struct ContentView: View {
         Song(id: 9, name: "Pelados em Santos", artist: "Mamonas Assasinas", cover: "https://mosaic.scdn.co/640/ab67616d00001e0220d57bc5fd5bbe506cabc22cab67616d00001e023982e253126c959ab9677bcbab67616d00001e029b6bfd2b42a363f11dcf1b7cab67616d00001e02adeae8c2b1b4087463e071e3"),
         Song(id: 10, name: "Staway to Heaven", artist: "Led Zeppeling", cover: "https://cdns-images.dzcdn.net/images/cover/9e663c64680899afd85f72af607d549e/264x264.jpg"),
     ]
+    
+    var musicas: [Song] {
+            if searchText.isEmpty {
+                return dados
+            } else {
+                return dados.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+            }
+        }
+    
+    @State var searchText = ""
+    @State var searchIsActive = true
     
     var body: some View {
         NavigationView{
@@ -42,7 +53,11 @@ struct ContentView: View {
                             SongItenView(musica: musica)
                         }
                     }
-                    Text("Sugeridos").font(.title).foregroundColor(.white)
+                    
+                    HStack{
+                        Text("Sugeridos").font(.title).foregroundColor(.white)
+                        Spacer()
+                    }.padding(10)
                     ScrollView(.horizontal){
                         HStack(spacing: 20) {
                             ForEach(0..<10) {
@@ -53,14 +68,14 @@ struct ContentView: View {
                                     .background(.red)
                             }
                         }
-                    }
+                    }.padding(10)
                 }
             }
             .padding()
             .background(
                 LinearGradient(gradient: Gradient(colors: [.green, .black]), startPoint: .top, endPoint: .bottom)
             )
-        }
+        }.searchable(text: $searchText)
     }
 }
 
